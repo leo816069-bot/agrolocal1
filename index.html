@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroLocal | Conectando el Campo de Nuevo León</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --verde-principal: #2d5a27; 
+            --verde-claro: #4caf50;
+            --rojo-detalles: #a62626; 
+            --amarillo-acento: #fbc02d; 
+            --blanco-hueso: #f9f9f9;
+            --oscuro: #212121;
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+
+        body { background-color: var(--blanco-hueso); color: var(--oscuro); line-height: 1.6; overflow-x: hidden; }
+
+        /* --- HEADER --- */
+        header {
+            background-color: white; padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 2000; 
+        }
+
+        .logo { font-weight: 700; font-size: 1.6rem; color: var(--verde-principal); text-decoration: none; }
+        .logo span { color: var(--rojo-detalles); }
+
+        nav { display: flex; align-items: center; }
+        nav a {
+            text-decoration: none; color: var(--oscuro); margin-left: 20px;
+            font-weight: 600; transition: 0.3s; font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 15px; text-align: center; }
+            nav { margin-top: 15px; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            nav a { margin-left: 0; margin: 0 10px; }
+        }
+
+        /* --- HERO --- */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover; background-position: center;
+            height: 60vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; color: white; padding: 0 20px;
+        }
+
+        .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); margin-bottom: 1rem; }
+
+        .search-container {
+            background: white; padding: 8px; border-radius: 50px; 
+            display: flex; width: 100%; max-width: 650px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); margin-top: 30px;
+        }
+
+        .search-container input {
+            flex: 1; border: none; padding: 12px 20px; border-radius: 50px; outline: none; font-size: 1rem; color: #333;
+        }
+
+        .btn-busqueda {
+            background-color: var(--amarillo-acento); color: var(--oscuro);
+            padding: 10px 25px; border: none; border-radius: 50px;
+            font-weight: 700; cursor: pointer;
+        }
+
+        /* --- CARRUSEL --- */
+        .seccion-vendedores { padding: 60px 5%; background: white; }
+        
+        .carousel-wrapper {
+            position: relative; max-width: 850px; margin: 40px auto;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .card-destacado {
+            width: 100%; background: white; border-radius: 25px; 
+            overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.12); 
+            border: 1px solid #eee; display: flex; flex-direction: column;
+            min-height: 500px; transition: opacity 0.3s ease;
+        }
+
+        #homeFotoVendedor {
+            height: 350px; width: 100%;
+            background-size: cover; background-position: center;
+            background-color: #eee;
+        }
+
+        .info-container { padding: 30px; }
+
+        .nav-btn {
+            background: var(--verde-principal); color: white; border: none;
+            width: 50px; height: 50px; border-radius: 50%; cursor: pointer;
+            position: absolute; z-index: 10; font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s;
+        }
+        .nav-btn:hover { background: var(--verde-claro); transform: scale(1.1); }
+        
+        .prev { left: -20px; } .next { right: -20px; }
+
+        @media (max-width: 600px) {
+            .nav-btn { width: 40px; height: 40px; }
+            .prev { left: -10px; } .next { right: -10px; }
+        }
+
+        /* --- WHATSAPP & MAPA --- */
+        .btn-whatsapp {
+            display: block; text-align: center; margin-top: 25px; padding: 18px;
+            background-color: #25D366; color: white; text-decoration: none;
+            font-weight: bold; border-radius: 15px; transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+        .btn-whatsapp:hover { background-color: #128C7E; }
+
+        #map-general {
+            width: 100%; height: 450px; border-radius: 25px;
+            margin-top: 50px; border: 6px solid white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            position: relative; z-index: 1;
+        }
+
+        footer {
+            background-color: var(--verde-principal); color: white;
+            text-align: center; padding: 3rem 1rem; margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Agro<span>Local</span></a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="#vendedores">Vendedores</a> 
+            <a href="login.html">Mi Panel</a>
+            <a href="registro.html" style="color: var(--rojo-detalles); border: 2px solid var(--rojo-detalles); padding: 8px 18px; border-radius: 25px;">Soy Vendedor</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Apoya lo local, consume fresco</h1>
+        <p>Directo de los huertos de García y Santa Catarina a tu hogar.</p>
+        <div class="search-container">
+            <input type="text" id="buscadorPrincipal" placeholder="Busca productos (Miel, Queso...)">
+            <button onclick="ejecutarBusqueda()" class="btn-busqueda">Buscar</button>
+        </div>
+    </section>
+
+    <section id="vendedores" class="seccion-vendedores">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="color: var(--verde-principal); font-size: clamp(1.5rem, 4vw, 2.5rem);">Productores en tu Región</h2>
+        </div>
+
+        <div class="carousel-wrapper">
+            <button class="nav-btn prev" onclick="cambiarVendedor(-1)">&#10094;</button>
+            
+            <div id="contenedorVendedor" class="card-destacado">
+                <div id="homeFotoVendedor"></div>
+                
+                <div class="info-container">
+                    <h3 id="homeNombreVendedor" style="color: var(--verde-principal); font-size: 1.8rem; margin-bottom: 10px;">Cargando productores...</h3>
+                    <p style="margin-bottom: 15px; font-size: 1rem; color: #555;">
+                        <strong>📍 Ubicación:</strong> <span id="homeUbicacionVendedor">García / Sta. Catarina</span>
+                    </p>
+                    
+                    <div style="background-color: #f0f7f0; padding: 20px; border-radius: 15px; border-left: 6px solid var(--verde-claro);">
+                        <p style="font-weight: bold; color: var(--verde-principal); margin-bottom: 5px; text-transform: uppercase; font-size: 0.75rem;">Productos disponibles:</p>
+                        <p id="homeProductosVendedor" style="color: #333; font-size: 1rem;">Conectando con el servidor...</p>
+                    </div>
+
+                    <a id="linkWhatsapp" href="#" target="_blank" class="btn-whatsapp">
+                        Contactar por WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <button class="nav-btn next" onclick="cambiarVendedor(1)">&#10095;</button>
+        </div>
+
+        <div id="map-general">Cargando mapa de productores...</div>
+    </section>
+
+    <footer>
+        <p><strong>AgroLocal 2026</strong><br>García - Santa Catarina, NL.</p>
+    </footer>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8woW6Hfqd2pzMFt9X2Rzgi5hdzR87tN4&callback=initMap" async defer></script>
+
+<script>
+// --- CONFIGURACIÓN DE URL FIJA DE RENDER ---
+const API_URL = 'https://agrolocal-api-izt5.onrender.com';
+
+let listaOriginal = [];
+let listaVendedores = [];
+let indiceActual = 0;
+let map;
+let markers = [];
+
+async function initMap() {
+    const centroRegion = { lat: 25.805, lng: -100.573 }; 
+    map = new google.maps.Map(document.getElementById("map-general"), {
+        zoom: 11, 
+        center: centroRegion,
+        styles: [{ "featureType": "poi.business", "stylers": [{ "visibility": "off" }] }]
+    });
+    cargarDatos();
+}
+
+async function cargarDatos() {
+    try {
+        const res = await fetch(`${API_URL}/api/vendedores`);
+        if (!res.ok) throw new Error('Error en respuesta');
+        const data = await res.json();
+        
+        // Filtramos para que solo aparezcan los que tienen nombre (evitar registros vacíos)
+        listaOriginal = data.filter(v => v.nombre);
+        listaVendedores = [...listaOriginal];
+        
+        if (listaVendedores.length > 0) {
+            mostrarVendedor(0);
+            actualizarMapa();
+        } else {
+            document.getElementById('homeNombreVendedor').innerText = "Próximamente más productores";
+            document.getElementById('homeProductosVendedor').innerText = "Estamos registrando nuevos productores locales.";
+        }
+    } catch (err) {
+        console.error("❌ Error de conexión:", err);
+        document.getElementById('homeNombreVendedor').innerText = "Servidor Despertando...";
+        document.getElementById('homeProductosVendedor').innerText = "Render tarda unos segundos en activar el servidor gratuito. Por favor refresca la página en un momento.";
+    }
+}
+
+function mostrarVendedor(indice) {
+    if (listaVendedores.length === 0) return;
+    const v = listaVendedores[indice];
+    const card = document.getElementById('contenedorVendedor');
+    
+    card.style.opacity = 0.5; 
+    
+    setTimeout(() => {
+        document.getElementById('homeNombreVendedor').innerText = v.nombre;
+        document.getElementById('homeProductosVendedor').innerText = v.productos || "Productos frescos de temporada";
+        
+        // --- LOGICA DE FOTO ---
+        let urlFoto = 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80';
+        if (v.foto_granja) {
+            // Si la foto ya viene con el prefijo data:image, la usamos directo
+            urlFoto = v.foto_granja.includes('data:image') ? v.foto_granja : `data:image/jpeg;base64,${v.foto_granja}`;
+        }
+        document.getElementById('homeFotoVendedor').style.backgroundImage = `url('${urlFoto}')`;
+
+        // UBICACIÓN TEXTO
+        document.getElementById('homeUbicacionVendedor').innerText = "García / Santa Catarina, NL";
+
+        // --- LOGICA DE WHATSAPP ---
+        const btnWA = document.getElementById('linkWhatsapp');
+        let numRaw = v.whatsapp ? v.whatsapp.toString().replace(/\D/g, '') : '';
+        
+        // Asegurar prefijo de México (52)
+        if (numRaw.length === 10) numRaw = "52" + numRaw;
+        
+        btnWA.href = `https://wa.me/${numRaw}?text=Hola%20${encodeURIComponent(v.nombre)},%20te%20encontré%20en%20AgroLocal.%20¿Qué%20productos%20tienes%20disponibles?`;
+        
+        card.style.opacity = 1;
+    }, 200);
+}
+
+function actualizarMapa() {
+    markers.forEach(m => m.setMap(null));
+    markers = [];
+
+    listaVendedores.forEach((v, i) => {
+        if (v.ubicacion && v.ubicacion.includes(',')) {
+            const coords = v.ubicacion.split(',');
+            const pos = { lat: parseFloat(coords[0]), lng: parseFloat(coords[1]) };
+            
+            const marker = new google.maps.Marker({ 
+                position: pos, 
+                map: map, 
+                title: v.nombre,
+                animation: google.maps.Animation.DROP,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            });
+
+            marker.addListener("click", () => {
+                indiceActual = i;
+                mostrarVendedor(i);
+                document.getElementById('vendedores').scrollIntoView({ behavior: 'smooth' });
+            });
+            markers.push(marker);
+        }
+    });
+}
+
+function cambiarVendedor(dir) {
+    if (listaVendedores.length <= 1) return;
+    indiceActual = (indiceActual + dir + listaVendedores.length) % listaVendedores.length;
+    mostrarVendedor(indiceActual);
+}
+
+function ejecutarBusqueda() {
+    const q = document.getElementById('buscadorPrincipal').value.toLowerCase().trim();
+    if (q === "") {
+        listaVendedores = [...listaOriginal];
+    } else {
+        listaVendedores = listaOriginal.filter(v => 
+            (v.nombre && v.nombre.toLowerCase().includes(q)) || 
+            (v.productos && v.productos.toLowerCase().includes(q))
+        );
+    }
+    
+    indiceActual = 0;
+    if (listaVendedores.length > 0) {
+        mostrarVendedor(0);
+        actualizarMapa();
+    } else {
+        alert("No encontramos productores con ese producto por ahora.");
+        listaVendedores = [...listaOriginal];
+        mostrarVendedor(0);
+    }
+}
+</script>
+</body>
+</html>
